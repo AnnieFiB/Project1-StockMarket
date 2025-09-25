@@ -5,22 +5,10 @@
 Project1-StockMarket/
 ├─ compose.yml                  # Orchestrates API, Kafka, Spark, Postgres, pgAdmin, Kafka UI
 ├─ .env                        # versions, passwords, ports
+├─ Dockerfile
+├─ apps/                      # Spark jobs consuming Kafka and writing to Postgres
+├─ data/
 |
-├─ api/                        # API service (publishes to Kafka)
-│  ├─ Dockerfile
-│  ├─ app.py                   # Example FastAPI producer
-│  ├─ requirements.txt
-│
-├─ spark/                      # Spark jobs consuming Kafka and writing to Postgres
-│  ├─ job.py                   # Structured Streaming job (Kafka → Postgres)
-│
-├─ postgres/
-│  ├─ init.sql                 # Initializes DB (events table etc.)
-│
-├─ scripts/ (chmod +x scripts/*.sh)
-│  ├─ send_test_event.sh       # quick curl to API
-│  └─ wait-for-url.sh          # tiny helper used by healthchecks
-│
 ├─ notebooks/                  # For ad-hoc exploration
 │  └─ exploration.ipynb
 │
@@ -41,25 +29,13 @@ docker compose down
 docker compose build
 docker compose up -d 
 
--- health check
-    curl -fsS http://localhost:8088/actuator/health && echo " (Kafka UI OK)"
-    curl -fsS http://localhost:8000/health && echo " (API OK)"
-
--- send data:
-    ./scripts/send_test_event.sh
--- Send a test event and verify rows land in Postgres:
-    curl -X POST http://localhost:8000/event \
-    -H "content-type: application/json" \
-    -d '{"source":"api","value":123,"category":"spark"}'
 
 ## Output
 
-- Kafka UI → http://localhost:8088  (topic events appears after first message)
-- API → http://localhost:8000/health
-- Postgres → localhost:5432 (db eventsdb; table public.events_stream)
-- pgAdmin → http://localhost:5050  (add server host postgres, user/pass app/app). add a server with:
-        Host: postgres | DB: eventsdb | User/Pass: app / app or any other  db
-- Spark live UI shows at http://localhost:4040,  History UI at http://localhost:18080 to inspect completed/existing runs.
+- Kafka UI → http://localhost:8082  
+- Postgres → localhost:5432 (db market-pulse)
+- pgAdmin → http://localhost:5050  (add server host postgres, user/pass admin/admin). add a server 
+- Spark live UI shows at http://localhost:8081
 
 ## check opened ports
     docker compose ps
@@ -86,7 +62,4 @@ docker compose up -d
     Connect to PostgreSQL:
         Server: localhost:5434
         Database: market_pulse
-        Credentials: user- app, password- app
-        Optional SQL:
-            SELECT source, category, value, to_timestamp(ingested_at) AS ingested_at_ts, processed_ts
-                    FROM public.events_stream;
+        Credentials: user- admin, password- admin
