@@ -1,12 +1,12 @@
-```bash
+
 # Project1-StockMarket (Real-Time Big Data Project)
 
 The project implements a **real-time data pipeline** that extracts stock data from vantage API, streams it through Apache Kafka, processes it with Apache Spark, and loads it into a **postgres** database. All components are containerized with Docker for easy deployment.
 
-![Data Pipeline Architecture](Data_pipeline_Archit.png)  
+![Data Pipeline Architecture](Data_pipeline_Archit.png)
 
 
-# # Project Structure – Stock Market Real-Time Pipeline
+## Project Structure – Stock Market Real-Time Pipeline
 
 Project1-StockMarket/
 ├── docker-compose.yml         # Orchestrates API, Kafka, Spark, Postgres, pgAdmin, and Kafka UI
