@@ -11,7 +11,6 @@ The project implements a **real-time data pipeline** that extracts stock data fr
 ```bash
 Project1-StockMarket/
 ├── docker-compose.yml         # Orchestrates API, Kafka, Spark, Postgres, pgAdmin, and Kafka UI
-├── .env                       # Environment variables (ports, credentials, API keys)
 ├── README.md                  # Setup + run instructions, versions, passwords, and port mappings
 
 ├── spark/
