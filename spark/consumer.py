@@ -112,10 +112,7 @@ def write_batch_to_postgres(df, batch_id: int):
             return
 
         # Deduplicate
-        window_spec = Window.partitionBy("symbol", "bar_time").orderBy(col("ingested_at").desc())
-        dedup = df.withColumn("row_num", row_number().over(window_spec)) \
-                  .filter(col("row_num") == 1) \
-                  .drop("row_num")
+        dedup = df.dropDuplicates(["symbol", "bar_time"])
 
         rows = dedup.count()
         log.info(f"Batch {batch_id}: writing {rows} row(s) to {table}.")

@@ -1,28 +1,35 @@
+```bash
 # Project1-StockMarket (Real-Time Big Data Project)
-
-![Data Pipeline Architecture](Data_pipeline_Archit.png)  
 
 The project implements a **real-time data pipeline** that extracts stock data from vantage API, streams it through Apache Kafka, processes it with Apache Spark, and loads it into a **postgres** database. All components are containerized with Docker for easy deployment.
 
-## Repo Structure
+![Data Pipeline Architecture](Data_pipeline_Archit.png)  
+
+
+# # Project Structure – Stock Market Real-Time Pipeline
 
 Project1-StockMarket/
-├─ docker-compose.yml         # Orchestrates API, Kafka, Spark, Postgres, pgAdmin, Kafka UI
-├─ .env
-├─ README.md                  # Setup + run instructions # versions, passwords, ports
-├─ spark/
-|    └─ consumer.py            # Spark jobs consuming Kafka and writing to Postgres
-├─ api/
-|   └─ Dockerfile
-|   └─ producer.py
-|   └─ requiremnts.txt
-├─ db_init/
-|   └─ schema_tables.sql
-├─ pgadmin/
-|   └─ servers.json
-└─ notebooks/                  # For ad-hoc exploration
-    └─ exploration.ipynb
-    └─ stock market analysis.pbix
+├── docker-compose.yml         # Orchestrates API, Kafka, Spark, Postgres, pgAdmin, and Kafka UI
+├── .env                       # Environment variables (ports, credentials, API keys)
+├── README.md                  # Setup + run instructions, versions, passwords, and port mappings
+
+├── spark/
+│   ├── consumer.py            # Spark job consuming Kafka streams and writing to Postgres
+│   └── Dockerfile             # Spark container configuration for job execution
+
+├── api/
+│   ├── Dockerfile
+│   ├── producer.py            # Kafka producer fetching live stock data via Alpha Vantage API
+│   └── requirements.txt       # Python dependencies for producer service
+
+├── db_init/
+│   └── schema_tables.sql      # PostgreSQL schema definitions and table creation scripts
+
+├── pgadmin/
+│   └── servers.json           # pgAdmin server connection configuration
+
+└── notebooks/                 # For ad-hoc data exploration and reporting
+    └── stock_market_analysis.pbix  # Power BI dashboard file
 
 
 ## Project Tech Stack and Flow
