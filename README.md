@@ -1,18 +1,29 @@
-# Project1-StockMarket 
+# Project1-StockMarket (Real-Time Big Data Project)
+
+![Data Pipeline Architecture](Data_pipeline_Archit.png)  
+
+The project implements a **real-time data pipeline** that extracts stock data from vantage API, streams it through Apache Kafka, processes it with Apache Spark, and loads it into a **postgres** database. All components are containerized with Docker for easy deployment.
 
 ## Repo Structure
 
 Project1-StockMarket/
-├─ compose.yml                  # Orchestrates API, Kafka, Spark, Postgres, pgAdmin, Kafka UI
-├─ .env                        # versions, passwords, ports
-├─ Dockerfile
-├─ apps/                      # Spark jobs consuming Kafka and writing to Postgres
-├─ data/
-|
-├─ notebooks/                  # For ad-hoc exploration
-│  └─ exploration.ipynb
-│
-└─ README.md                   # Setup + run instructions
+├─ docker-compose.yml         # Orchestrates API, Kafka, Spark, Postgres, pgAdmin, Kafka UI
+├─ .env
+├─ README.md                  # Setup + run instructions # versions, passwords, ports
+├─ spark/
+|    └─ consumer.py            # Spark jobs consuming Kafka and writing to Postgres
+├─ api/
+|   └─ Dockerfile
+|   └─ producer.py
+|   └─ requiremnts.txt
+├─ db_init/
+|   └─ schema_tables.sql
+├─ pgadmin/
+|   └─ servers.json
+└─ notebooks/                  # For ad-hoc exploration
+    └─ exploration.ipynb
+    └─ stock market analysis.pbix
+
 
 ## Project Tech Stack and Flow
 
@@ -21,21 +32,31 @@ Project1-StockMarket/
 - Spark → consumes from Kafka, writes to Postgres.
 - Postgres → stores results for analytics.
 - pgAdmin → manage Postgres visually.
-- Power BI → external (connects to Postgres at localhost:5432).
+- Power BI → external (connects to Postgres at localhost:5434).
 
 ## Run Container
 
 docker compose down
 docker compose build
-docker compose up -d 
+docker compose up -d
+docker compose ps
+
+# only if you want a clean first-boot init
+docker compose down -v
+docker compose build
+docker compose up -d
+docker compose ps
+
+
+- reclaim disk space in docker: docker system prune -af --volumes / docker builder prune -af
 
 
 ## Output
 
 - Kafka UI → http://localhost:8082  
-- Postgres → localhost:5432 (db market-pulse)
+- Postgres → localhost:5434 (db market-pulse)
 - pgAdmin → http://localhost:5050  (add server host postgres, user/pass admin/admin). add a server 
-- Spark live UI shows at http://localhost:8081
+- Spark live UI shows at http://localhost:8080 (master) & http://localhost:8081 (worker)
 
 ## check opened ports
     docker compose ps
