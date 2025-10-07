@@ -8,6 +8,7 @@ The project implements a **real-time data pipeline** that extracts stock data fr
 
 ## Project Structure – Stock Market Real-Time Pipeline
 
+```bash
 Project1-StockMarket/
 ├── docker-compose.yml         # Orchestrates API, Kafka, Spark, Postgres, pgAdmin, and Kafka UI
 ├── .env                       # Environment variables (ports, credentials, API keys)
@@ -31,6 +32,7 @@ Project1-StockMarket/
 └── notebooks/                 # For ad-hoc data exploration and reporting
     └── stock_market_analysis.pbix  # Power BI dashboard file
 
+```
 
 ## Project Tech Stack and Flow
 
@@ -43,6 +45,7 @@ Project1-StockMarket/
 
 ## Run Container
 
+```bash
 docker compose down
 docker compose build
 docker compose up -d
@@ -53,12 +56,15 @@ docker compose down -v
 docker compose build
 docker compose up -d
 docker compose ps
+```
 
+- reclaim disk space in docker:
 
-- reclaim disk space in docker: docker system prune -af --volumes / docker builder prune -af
+```bash
+ docker system prune -af --volumes / docker builder prune -af
+```
 
-
-## Output
+### Output
 
 - Kafka UI → http://localhost:8082  
 - Postgres → localhost:5434 (db market-pulse)
@@ -66,10 +72,10 @@ docker compose ps
 - Spark live UI shows at http://localhost:8080 (master) & http://localhost:8081 (worker)
 
 ## check opened ports
+
+```bash
     docker compose ps
     docker compose port postgres 5432
-        netstat -ano | findstr :5432
-
 ## Tail logs
     docker compose logs -f api
     docker compose logs -f kafka
@@ -78,16 +84,28 @@ docker compose ps
 ## Restart a single service after edits
     docker compose up -d --build api
     docker compose restart spark
+```
 
-## Validate compose file: docker compose config
+## Validate compose file:
 
-## Confirm Spark has the Kafka & Postgres jars: docker compose exec spark bash -lc 'ls /opt/bitnami/spark/jars | egrep "kafka|postgresql"'
+```bash 
+docker compose config
+```
 
-## API says queued but no Kafka messages: Check KAFKA_BOOTSTRAP is kafka:9092 inside the API container and that topic is events
+## Confirm Spark has the Kafka & Postgres jars:
 
+```bash
+ docker compose exec spark bash -lc 'ls /opt/bitnami/spark/jars | egrep "kafka|postgresql"'
+```
+
+### API says queued but no Kafka messages: Check KAFKA_BOOTSTRAP is kafka:9092 inside the API container and that topic is events
 
 ## Power BI
-    Connect to PostgreSQL:
+
+Connect to PostgreSQL:
+
+```bash
         Server: localhost:5434
         Database: market_pulse
         Credentials: user- admin, password- admin
+```
