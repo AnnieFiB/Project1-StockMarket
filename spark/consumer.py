@@ -98,9 +98,8 @@ out = rows.select(
 )
 
 # -----------------
-# Deduplicate by symbol + bar_time
+# Using raw output for streaming
 # -----------------
-# Use raw output for streaming; deduplication will happen per batch
 stream_df = out
 
 # -----------------
@@ -112,7 +111,7 @@ def write_batch_to_postgres(df, batch_id: int):
             log.info(f"Batch {batch_id}: empty, skipping.")
             return
 
-        # Deduplicate within batch
+        # Deduplicate
         window_spec = Window.partitionBy("symbol", "bar_time").orderBy(col("ingested_at").desc())
         dedup = df.withColumn("row_num", row_number().over(window_spec)) \
                   .filter(col("row_num") == 1) \
